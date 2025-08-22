@@ -1,10 +1,10 @@
-from beanie import Document
+from beanie import Document, PydanticObjectId
 from pydantic import Field
 from typing import Optional
 from datetime import datetime
 
 class Planogram(Document):
-    id: Optional[str] = Field(default=None, alias="_id")
+    id: Optional[PydanticObjectId] = Field(default=None, alias="_id")
     store_id: str  
     planogram_name: str  
     layout_image: str  

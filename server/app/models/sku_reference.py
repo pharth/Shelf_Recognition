@@ -1,10 +1,10 @@
-from beanie import Document
+from beanie import Document, PydanticObjectId
 from pydantic import Field
 from typing import Optional
 from datetime import datetime
 
 class SKUReference(Document):
-    id: Optional[str] = Field(default=None, alias="_id")
+    id: Optional[PydanticObjectId] = Field(default=None, alias="_id")
     sku_name: str  
     brand: str  
     image_url: str  

@@ -1,11 +1,11 @@
-from beanie import Document
+from beanie import Document, PydanticObjectId
 from pydantic import Field
 from typing import Optional
 from datetime import datetime
 from decimal import Decimal
 
 class Store(Document):
-    id: Optional[str] = Field(default=None, alias="_id")
+    id: Optional[PydanticObjectId] = Field(default=None, alias="_id")
     name: str
     store_code: str = Field(unique=True)
     address: str
