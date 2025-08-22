@@ -1,20 +1,34 @@
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import Optional
 from datetime import datetime
+from decimal import Decimal
 
-class ImageUploadResponse(BaseModel):
-    image_id: str
-    status: str
-    message: str
+class ImageCreate(BaseModel):
+    user_id: str
+    store_id: str
+    image_url: str
+    latitude: Decimal
+    longitude: Decimal
 
-class ImageAnalysisResponse(BaseModel):
-    image_id: str
-    osa_percent: float
-    sos_percent: float
-    planogram_compliance: bool
-    analysis_time: datetime
-    status: str
+class ImageUpdate(BaseModel):
+    image_url: Optional[str] = None
+    latitude: Optional[Decimal] = None
+    longitude: Optional[Decimal] = None
+    is_deleted: Optional[bool] = None
 
-class ImageHistoryResponse(BaseModel):
-    images: List[dict]
-    total: int
+class ImageResponse(BaseModel):
+    id: str
+    user_id: str
+    store_id: str
+    image_url: str
+    latitude: Decimal
+    longitude: Decimal
+    upload_time: datetime
+    is_deleted: bool
+    
+    class Config:
+        from_attributes = True
+        json_encoders = {
+            datetime: lambda v: v.isoformat(),
+            Decimal: lambda v: float(v)
+        }
