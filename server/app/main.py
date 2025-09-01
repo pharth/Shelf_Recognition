@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import motor.motor_asyncio
 from beanie import init_beanie
 from datetime import datetime
-from api import images
+from api import images, analytics
 from config import settings
 
 # Import all Beanie models
@@ -11,10 +11,11 @@ from models.user import User
 from models.store import Store
 from models.image import Image
 from models.shelf_analysis import ShelfAnalysis
-from models.sku_reference import SKUReference
 from models.panogram import Planogram
     
 app = FastAPI(title="MAssist Shelf SDK", version="1.0.0")
+
+
 
 # CORS
 app.add_middleware(
@@ -38,13 +39,15 @@ async def init_db():
             Store,
             Image,
             ShelfAnalysis,
-            SKUReference,
             Planogram
         ]
     )
 
 # Routes
 app.include_router(images.router, prefix="/api/images")
+
+app.include_router(analytics.router)  
+
 
 @app.get("/")
 async def root():
