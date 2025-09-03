@@ -1,0 +1,21 @@
+# Python junk
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.log
+
+# Virtual environments
+venv/
+.env/
+
+# Node / frontend
+node_modules/
+client/
+uploads/
+
+# Git & OS junk
+.git/
+.gitignore
+.DS_Store
