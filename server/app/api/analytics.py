@@ -17,9 +17,15 @@ router = APIRouter(prefix="/api/analytics", tags=["analytics"])
 current_dir = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(current_dir, "..", "ml", "models", "best.pt")
 
-# Init models
-yolo_model = YOLO(model_path)   # your trained YOLO model
+# Init models - LAZY LOADING
+yolo_model = None
 reader = easyocr.Reader(['en'])         # OCR model
+
+def get_yolo_model():
+    global yolo_model
+    if yolo_model is None:
+        yolo_model = YOLO(model_path)
+    return yolo_model
 
 class SKUResponse(BaseModel):
     OSA: float
@@ -38,8 +44,9 @@ async def analyze_sku(
     contents = await file.read()
     image = Image.open(io.BytesIO(contents)).convert("RGB")
 
-    # Stage 1: YOLO
-    results = yolo_model.predict(np.array(image))
+    # Stage 1: YOLO - Load model lazily
+    model = get_yolo_model()
+    results = model.predict(np.array(image))
     res_img = results[0].plot()   # numpy array with bounding boxes drawn
 
     # Save it with OpenCV - fix the output path as well
