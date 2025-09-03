@@ -1,30 +1,24 @@
-FROM python:3.11-bookworm
+FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies for OpenCV and ML
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     libgomp1 \
-    curl \
-    ffmpeg \
-    libsm6 \
-    libxext6 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy and install Python requirements first (for better Docker caching)
+# Install PyTorch CPU first (most reliable way)
+RUN pip install --no-cache-dir torch==2.1.0+cpu torchvision==0.16.0+cpu --index-url https://download.pytorch.org/whl/cpu
+
+# Copy requirements and install other packages
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy your app code
-COPY ./app /app
+# Copy app code and model
+COPY app/ .
 
-# Create necessary directories
-RUN mkdir -p /app/uploads /app/client
-
-# Expose port
 EXPOSE 8000
 
-# Run the app
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
