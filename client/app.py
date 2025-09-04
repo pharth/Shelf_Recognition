@@ -11,7 +11,7 @@ import time
 # ---------------------------
 # Load environment variables
 # ---------------------------
-load_dotenv()
+# load_dotenv()
 
 # Mobile-optimized page config
 st.set_page_config(
@@ -120,7 +120,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # API endpoint configuration
-API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
+
+API_BASE_URL = os.environ["API_BASE_URL"]
 
 # Initialize session state
 if 'analysis_complete' not in st.session_state:
