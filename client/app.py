@@ -35,6 +35,19 @@ st.markdown("""
         max-width: 100%;
     }
     
+    /* Logo styling */
+    .logo-container {
+        text-align: center;
+        padding: 20px 0 10px 0;
+        margin-bottom: 20px;
+    }
+    
+    .logo-container img {
+        max-width: 200px;
+        height: auto;
+        border-radius: 10px;
+    }
+    
     /* Header styling */
     .app-header {
         text-align: center;
@@ -115,12 +128,13 @@ st.markdown("""
     @media (max-width: 768px) {
         .main-container { padding: 5px; }
         .metric-card { margin: 5px 0; padding: 10px; }
+        .logo-container img { max-width: 150px; }
     }
 </style>
 """, unsafe_allow_html=True)
 
 # API endpoint configuration
-
+# API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
 API_BASE_URL = os.environ["API_BASE_URL"]
 
 # Initialize session state
@@ -142,6 +156,32 @@ with st.sidebar:
 
 ANALYTICS_ENDPOINT = f"{api_url}/api/analytics/analyze"
 OUTPUT_IMAGE_ENDPOINT = f"{api_url}/api/analytics/output-image"
+
+# ---------------------------
+# Logo Display
+# ---------------------------
+try:
+    # Try to load logo from file
+    logo_path = "assets\massist_logo.png"  # Change this to your logo file path
+    if os.path.exists(logo_path):
+        logo = Image.open(logo_path)
+        st.markdown('<div class="logo-container">', unsafe_allow_html=True)
+        st.image(logo, use_container_width =False)
+        st.markdown('</div>', unsafe_allow_html=True)
+    else:
+        # Fallback: Display company name as text logo if no image file
+        st.markdown("""
+        <div class="logo-container">
+            <h2 style="margin: 0; color: #667eea; font-weight: bold;">Your Company Logo</h2>
+        </div>
+        """, unsafe_allow_html=True)
+except Exception:
+    # Fallback text logo
+    st.markdown("""
+    <div class="logo-container">
+        <h2 style="margin: 0; color: #667eea; font-weight: bold;">Your Company Logo</h2>
+    </div>
+    """, unsafe_allow_html=True)
 
 # ---------------------------
 # Header
@@ -170,7 +210,7 @@ with tab1:
         
         # Display captured image in frame
         st.markdown('<div class="camera-frame">', unsafe_allow_html=True)
-        st.image(camera_image, caption="Captured Image", use_column_width=True)
+        st.image(camera_image, caption="Captured Image", use_container_width =True)
         st.markdown('</div>', unsafe_allow_html=True)
 
 with tab2:
@@ -189,7 +229,7 @@ with tab2:
         
         # Display uploaded image
         st.markdown('<div class="camera-frame">', unsafe_allow_html=True)
-        st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
+        st.image(uploaded_file, caption="Uploaded Image", use_container_width =True)
         st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------------------------
@@ -305,7 +345,7 @@ if st.session_state.analysis_complete and st.session_state.analysis_results:
     if st.session_state.output_image_data:
         try:
             output_image = Image.open(io.BytesIO(st.session_state.output_image_data))
-            st.image(output_image, caption="Analysis Results", use_column_width=True)
+            st.image(output_image, caption="Analysis Results", use_container_width =True)
         except Exception as e:
             st.warning(f"Could not display processed image: {e}")
     
