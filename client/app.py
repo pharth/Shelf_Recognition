@@ -11,7 +11,7 @@ import time
 # ---------------------------
 # Load environment variables
 # ---------------------------
-# load_dotenv()
+load_dotenv()
 
 # Mobile-optimized page config
 st.set_page_config(
@@ -134,8 +134,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # API endpoint configuration
-# API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
-API_BASE_URL = os.environ["API_BASE_URL"]
+API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
+# API_BASE_URL = os.environ["API_BASE_URL"]
 
 # Initialize session state
 if 'analysis_complete' not in st.session_state:
@@ -162,7 +162,7 @@ OUTPUT_IMAGE_ENDPOINT = f"{api_url}/api/analytics/output-image"
 # ---------------------------
 try:
     # Try to load logo from file
-    logo_path = "assets/massist_logo.png"  # Change this to your logo file path
+    logo_path = "client/assets/massist_logo.png"  # Change this to your logo file path
     if os.path.exists(logo_path):
         logo = Image.open(logo_path)
         st.markdown('<div class="logo-container">', unsafe_allow_html=True)
