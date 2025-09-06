@@ -162,7 +162,7 @@ OUTPUT_IMAGE_ENDPOINT = f"{api_url}/api/analytics/output-image"
 # ---------------------------
 try:
     # Try to load logo from file
-    logo_path = "assets\massist_logo.png"  # Change this to your logo file path
+    logo_path = "assets/massist_logo.png"  # Change this to your logo file path
     if os.path.exists(logo_path):
         logo = Image.open(logo_path)
         st.markdown('<div class="logo-container">', unsafe_allow_html=True)
